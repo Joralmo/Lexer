@@ -1,4 +1,5 @@
 import re
+
 tokens = [
     (r'[$][^\d]([A-Za-z])*([0-9])*',"VARIABLE"),
 	(r'Sr.escriba','FUNCION'),
@@ -20,24 +21,60 @@ tokens = [
 	(r'(\")(.*)(\")', 'CADENA'),
 	(r'[ \n\t]+', None),
 ]
+
 string = open('prueba.sr').read()
-def validate(caracteres):
-	pos = 0
-	#caracteres=re.sub("\s*","",caracteres)
-	while pos < len(caracteres):
-		m = None
-		for token in tokens:
-			token, tipo = token
-			r =re.compile(token)
-			m = r.match(caracteres, pos)
+
+def validate(texto):
+	
+	texto = texto.strip().split('\n')
+
+	invalidos = []
+
+	error = False
+
+	for index in range(len(texto)):
+		
+		caracteres = texto[index]
+		
+		pos = 0
+
+		palabra = ""
+
+		while pos < len(caracteres):
+			
+			m = None
+
+			for token in tokens:
+				token, tipo = token
+				r =re.compile(token)
+				m = r.match(caracteres, pos)
+				if m:
+					text = m.group(0)
+					if tipo!=None:
+						#print(str(text)+" >> "+str(tipo))
+						pass
+					break
 			if m:
-				text = m.group(0)
-				if tipo!=None:
-					print(str(text)+" >> "+str(tipo))
-				break
-		if m:
-			pos =  m.end(0)
-		else:
-			print("Caracter ilegal", caracteres[pos])
-			pos = pos + 1
-validate(string)
+				pos =  m.end(0)
+			else:
+				#print("Caracter ilegal", caracteres[pos])
+				error = True
+				palabra = palabra + caracteres[pos]
+				pos = pos + 1
+
+
+		if error:
+			invalidos.append({'invalido':index + 1, 'palabra':palabra})
+			palabra = ""
+			error = False
+		
+		
+
+
+
+
+	return invalidos
+
+
+
+
