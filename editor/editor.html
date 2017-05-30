@@ -33,12 +33,14 @@
 </head>
 <body>
 
-  <pre id="editor">function foo(items) {
-    var i;
-    for (i = 0; i < items.length; i++) {
-    alert("Ace Rocks " + items[i]);
-  }
-}</pre>
+  <pre id="editor">$a2 Sr.igual 3
+$b2 Sr.igual 4
+Sr.si ($b2 Sr.esigual $a2) => m
+    Sr.escriba("El mayor es" Sr.suma $b2)
+Sr.no =>
+        Sr.escriba("El mayor es" Sr.suma $a2)
+    <=
+<=</pre>
 <a class='flotante' href='#' ><i class="fa fa-play" aria-hidden="true"></i></a>
 
 <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -48,12 +50,21 @@
   // editor.getSession().setMode("ace/mode/javascript");
   $(".flotante").click(function(){
     // console.log(editor.gotoLine(4));
-    editor.find('alert');
-    editor.setHighlightActiveLine(true)
-    hablar(editor.getCursorPosition().row+1);
+    $.post("http://192.168.1.33:5000",{string:editor.getValue()}, function(data){
+      if(data.length>0){
+        for(i in data){
+          editor.setHighlightActiveLine(true)
+          editor.find(data[i]["palabra"]);
+          console.log(data[i]["invalido"]);
+          error(data[i]["invalido"], data[i]["palabra"]);
+        }
+      }else{
+        correcto();
+      }
+    });
+    // editor.find('alert');
+    // editor.setHighlightActiveLine(true)
   });
-
-
 
 
 
@@ -87,9 +98,11 @@
         }
     }
 
-function hablar(linea){
-  let message="hola";
-  speak.speak({message:"hola el error está en la línea"+ linea});
+function error(linea, palabra){
+  speak.speak({message:"Error encontrado en la línea"+ linea +", palabra: "+ palabra});
+}
+function correcto(){
+  speak.speak({message:"Compilado con exito"});
 }
 /*--------------------------------------------------------------------------------------------------------*/
 
