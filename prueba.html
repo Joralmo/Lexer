@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+
+	<script>
+		'use strict';
+
+		let data = `
+		momo
+		$a2 Sr.igual 3
+		$b2 Sr.igual 4
+		Sr.si ($b2 Sr.esigual $a2) => 
+		    Sr.escriba("El mayor es" Sr.suma $b2) 
+		Sr.no =>
+		        Sr.escriba("El mayor es" Sr.suma $a2)
+		    <=
+		<=
+		`
+		$.ajax({
+			type:'POST',
+			url:'http://192.168.1.33:5000/',
+			data:{'string':data},
+			success:function(data){	
+				console.log(data)
+			}
+		});
+
+	</script>
+</body>
+</html>
