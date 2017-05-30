@@ -4,38 +4,95 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Editor</title>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
   <script
   src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <style type="text/css" media="screen">
     body {
-        overflow: hidden;
+      overflow: hidden;
     }
 
     #editor {
-        margin: 0;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+      margin: 0;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    .flotante {
+      display:scroll;
+      position:fixed;
+      bottom:10px;
+      right:10px;
+      text-decoration: none;
+      color: tomato;
+      font-size: 40px;
     }
   </style>
 </head>
 <body>
 
-<pre id="editor">function foo(items) {
+  <pre id="editor">function foo(items) {
     var i;
-    for (i = 0; i &lt; items.length; i++) {
-        alert("Ace Rocks " + items[i]);
-    }
+    for (i = 0; i < items.length; i++) {
+    alert("Ace Rocks " + items[i]);
+  }
 }</pre>
-<a class='flotante' href='#' >asd</a>
+<a class='flotante' href='#' ><i class="fa fa-play" aria-hidden="true"></i></a>
 
 <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/twilight");
-    console.log(editor.getValue())
+  var editor = ace.edit("editor");
+  editor.setTheme("ace/theme/kuroir");
+  // editor.getSession().setMode("ace/mode/javascript");
+  $(".flotante").click(function(){
+    // console.log(editor.gotoLine(4));
+    editor.find('alert');
+    editor.setHighlightActiveLine(true)
+    hablar(editor.getCursorPosition().row+1);
+  });
+
+
+
+
+
+/*--------------------------------- Speech Synthesis----------------------------------------------*/
+    
+    let speak = {
+        a: 0,
+        msg:null,
+
+        validate: function(){
+            if('speechSynthesis' in window){
+                return true;
+            } 
+            return false;
+        },
+        speak:function(obj){
+            if(this.validate()){
+                let o = obj || {message:"Bienvenido", idioma:"es-ES"};
+                this.msg = new SpeechSynthesisUtterance(o.message);
+                this.msg.lang = o.idioma;
+                
+                window.speechSynthesis.speak(this.msg);
+
+                this.msg.onend = function(){
+                    
+                    if('onsucces' in o){
+                        obj.onsucces();
+                    }
+                }
+            }
+        }
+    }
+
+function hablar(linea){
+  let message="hola";
+  speak.speak({message:"hola el error está en la línea"+ linea});
+}
+/*--------------------------------------------------------------------------------------------------------*/
+
 </script>
 
 </body>
