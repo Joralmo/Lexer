@@ -35,14 +35,14 @@
 </head>
 <body>
 
-  <pre id="editor"><!-- $a2 Sr.igual 3
+  <pre id="editor">$a2 Sr.igual 3
 $b2 Sr.igual 4
 Sr.si ($b2 Sr.esigual $a2) => m
     Sr.escriba("El mayor es" Sr.suma $b2)
 Sr.no =>
         Sr.escriba("El mayor es" Sr.suma $a2)
     <=
-<= --></pre>
+<=</pre>
 <a class='flotante' href='#' ><i class="fa fa-play" aria-hidden="true"></i></a>
 
 <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -52,7 +52,7 @@ Sr.no =>
   // editor.getSession().setMode("ace/mode/javascript");
   $(".flotante").click(function(){
     // console.log(editor.gotoLine(4));
-    $.post("http://0.0.0.0:5000",{string:editor.getValue()}, function(data){
+    $.post("http://192.168.1.56:5000",{string:editor.getValue()}, function(data){
       if(data.length>0){
         for(i in data){
           editor.setHighlightActiveLine(true)
